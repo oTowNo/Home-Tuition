@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jasper's Math Tuition - Home Tutoring Information</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .slides-container {
+            width: 100%;
+            max-width: 1000px;
+            perspective: 1000px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+            min-height: 650px;
+            display: none;
+            animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.05), transparent);
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 25px;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ffd89b, #19547b);
+        }
+
+        .content-section {
+            margin: 20px 0;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section h3 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        p, ul {
+            color: #333;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            list-style-position: inside;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        li::before {
+            content: '✓';
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: -10px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe9a0 100%);
+            padding: 20px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6eeff 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            background: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            color: #667eea;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            font-size: 1.1em;
+        }
+
+        .welcome-slide {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .welcome-slide h1 {
+            font-size: 3.2em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-slide p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .tutor-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            transform: perspective(1000px) rotateX(2deg);
+            transition: transform 0.3s ease;
+        }
+
+        .tutor-card:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+        }
+
+        .tutor-card h3 {
+            color: white;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .tutor-card p {
+            color: white;
+            font-size: 1.15em;
+            margin-bottom: 10px;
+        }
+
+        .directions-step {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .directions-step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .directions-step strong {
+            color: #667eea;
+            font-size: 1.15em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder::before {
+            content: '📸';
+            font-size: 3em;
+            position: absolute;
+            opacity: 0.2;
+        }
+
+        .image-placeholder:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-color: #764ba2;
+        }
+
+        .rate-table {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #e9ecef;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .rate-table p {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 10px;
+            border-bottom: 2px solid #e9ecef;
+            transition: background 0.3s ease;
+        }
+
+        .rate-table p:hover {
+            background: rgba(102, 126, 234, 0.05);
+            padding-left: 15px;
+        }
+
+        .rate-table p:last-child {
+            border-bottom: none;
+        }
+
+        .rate-table strong {
+            color: #667eea;
+        }
+
+        .rate-table span {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .bonus-box {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(255, 216, 155, 0.4);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 15px 40px rgba(255, 216, 155, 0.4); }
+            to { box-shadow: 0 15px 50px rgba(255, 216, 155, 0.6); }
+        }
+
+        .bonus-box h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .decorative-icon {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .location-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px;
+                min-height: 500px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+
+            .image-placeholder {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slides-container">
+        <!-- Slide 1: Welcome -->
+        <div class="slide active welcome-slide">
+            <div class="decorative-icon">📚</div>
+            <h1>Welcome to Jasper's Math Tuition</h1>
+            <p>Quality Mathematics Education for Primary, Secondary & JC Students</p>
+            <div class="tutor-card" style="margin-top: 40px;">
+                <h3>👨‍🏫 [Your Name]</h3>
+                <p>📱 WhatsApp/Telegram: [Your Contact Number]</p>
+                <p>🎓 Math Degree with First Class Honours</p>
+                <p>📖 Specializing in: Primary Math, Sec E/A-Maths, JC H2 Maths</p>
+            </div>
+            <p style="margin-top: 30px; font-size: 1.1em;">Swipe through to learn about tuition details →</p>
+        </div>
+
+        <!-- Slide 2: Location Overview -->
+        <div class="slide">
+            <h2>📍 Tuition Location</h2>
+            
+            <div class="image-placeholder">
+                [Insert location/building photo here - Step 0]
+            </div>
+
+            <div class="info-box">
+                <h3 style="color: #667eea; margin-bottom: 15px;">🏠 Home Address</h3>
+                <p style="font-size: 1.2em;"><strong>Block 351 Woodlands Ave 1</strong></p>
+                <p style="font-size: 1.2em;"><strong>#07-733 S730351</strong></p>
+                <div class="location-badge" style="margin-top: 15px;">📍 Near Woodlands MRT (NS Line)</div>
+            </div>
+
+            <div class="content-section">
+                <h3>🗺️ Getting Here</h3>
+                <p><strong>From Woodlands MRT Exit 1 (Ave 3)</strong></p>
+                <p>Approximately 10-12 minutes walk</p>
+            </div>
+
+            <div class="highlight">
+                <p><strong>✨ First Lesson Support:</strong></p>
+                <p>For your first lesson, I will personally guide your child to my home to ensure they can reach the destination safely and confidently. This gives both parents and students peace of mind! 😊</p>
+            </div>
+
+            <div class="content-section" style="margin-top: 25px;">
+                <p style="color: #666; font-style: italic;">👉 Detailed step-by-step directions with photos on the next slides!</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Directions Part 1 (Steps 1-4) -->
+        <div class="slide">
+            <h2>🚶 Walking Directions (Part 1)</h2>
+            
+            <div class="directions-step">
+                <strong>Step 1: Exit Woodlands MRT</strong>
+                <p>From Woodlands MRT (NS line), head towards <strong>Exit 1 (Ave 3)</strong>. Walk straight upon exiting.</p>
+                <div class="image-placeholder">
+                    [Insert Step 1 photo here]
+                </div>
+            </div>
+
+            <div class="directions-step">
+                <strong>Step 2: Walk Around Causeway Point</strong>
+                <p>Walk around the outskirt of <strong>Causeway Point</strong> until you see a traffic road. Cross the road.</p>
+                <div class="image-placeholder">
+                    [Insert Step 2 photo here]
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Directions Part 2 (Steps 3-4) -->
+        <div class="slide">
+            <h2>🚶 Walking Directions (Part 2)</h2>
+            
+            <div class="directions-step">
+                <strong>Step 3: Walk on Left Pavement</strong>
+                <p>Upon crossing, walk on the <strong>left pavement</strong> all the way until you see a T-junction (road).</p>
+                <div class="image-placeholder">
+                    [Insert Step 3 photo here]
+                </div>
+            </div>
+
+            <div class="directions-step">
+                <strong>Step 4: Cross the T-Junction</strong>
+                <p>Once you see the T-junction road, <strong>cross the road</strong>.</p>
+                <div class="image-placeholder">
+                    [Insert Step 4 & 5 photos here]
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Directions Part 3 (Steps 5-8) -->
+        <div class="slide">
+            <h2>🚶 Walking Directions (Part 3)</h2>
+            
+            <div class="directions-step">
+                <strong>Step 5-6: Pass Through Block 361</strong>
+                <p>Pass through <strong>Block 361</strong> until you see a playground on the other side. Walk through the left pavement beside the playground until you see the road.</p>
+                <div class="image-placeholder">
+                    [Insert Step 6 photo here]
+                </div>
+            </div>
+
+            <div class="directions-step">
+                <strong>Step 7-8: Almost There!</strong>
+                <p>Cross the road. You'll see a minimart (<strong>Yeo Express</strong>) at Block 354. Pass through the block - you'll see another playground and a court. <strong>Block 351</strong> will be visible on the right side of the playground. You've arrived! 🎉</p>
+                <div class="image-placeholder">
+                    [Insert Step 7 & 8 photos here]
+                </div>
+            </div>
+
+            <div class="highlight" style="margin-top: 20px;">
+                <p><strong>🤗 Remember:</strong> Don't worry if this seems like a lot - I'll guide you personally for the first lesson!</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Rates & Payment -->
+        <div class="slide">
+            <h2>💳 Rates & Payment Information</h2>
+            
+            <div class="rate-table">
+                <p><strong>Hourly Rate:</strong> <span style="color: #667eea; font-size: 1.3em; font-weight: bold;">$50 per hour</span></p>
+                <p><strong>Session Duration:</strong> <span>1.5 hours</span></p>
+                <p><strong>Day:</strong> <span>Every Tuesday</span></p>
+                <p><strong>Time:</strong> <span>To be determined (based on your schedule)</span></p>
+            </div>
+
+            <div class="content-section">
+                <h3>💰 Payment Methods</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em;"><strong>📱 PayNow:</strong> +65 8133 6308</p>
+                    <p style="font-size: 1.15em;"><strong>🏦 POSB Savings:</strong> 098-04347-0</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>📅 Payment Schedule</h3>
+                <p>Payments should be made at the <strong>end of each month</strong>.</p>
+                <p>An invoice will be generated and sent to parents each month as a payment reminder.</p>
+            </div>
+
+            <div class="highlight">
+                <p><strong>💡 Friendly Reminder:</strong> Please keep your payment receipts for reference. An organized payment record helps both of us! 😊</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Cancellation Policy -->
+        <div class="slide">
+            <h2>🔔 Cancellation & Flexibility Policy</h2>
+            
+            <div class="info-box" style="background: linear-gradient(135deg, #e7f5e7 0%, #d4f1d4 100%); border-color: #28a745;">
+                <div class="decorative-icon" style="font-size: 3em;">✨</div>
+                <h3 style="color: #28a745; justify-content: center;">Flexible & Understanding Approach</h3>
+                <p style="text-align: center; font-size: 1.2em; color: #28a745;"><strong>No cancellation charges</strong> from both tutor and student side! 🎉</p>
+            </div>
+
+            <div class="content-section">
+                <h3>📢 How to Cancel or Reschedule</h3>
+                <p>Simply inform me in advance via:</p>
+                <ul>
+                    <li>📱 WhatsApp: +65 8133 6308</li>
+                    <li>💬 Telegram: +65 8133 6308</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>📚 Exam Preparation Breaks</h3>
+                <p>Some lessons may be cancelled to allow students time to prepare for:</p>
+                <ul>
+                    <li>Weighted Assessments (WA)</li>
+                    <li>School examinations</li>
+                    <li>Important tests</li>
+                </ul>
+                <p style="margin-top: 15px;"><em>*Unless you request for lessons to continue, which is perfectly fine! I'm here to support your child's learning needs.</em></p>
+            </div>
+
+            <div class="highlight">
+                <p><strong>🤝 Understanding Matters:</strong> Life happens! I believe in a flexible approach that works for both families and effective learning. Clear communication is all we need!</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Materials & Lesson Format -->
+        <div class="slide">
+            <h2>📖 Materials & Lesson Details</h2>
+            
+            <div class="content-section">
+                <h3>📚 Materials Provided (FREE!)</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.1em;">✅ Revision books - <strong>No additional cost!</strong></p>
+                    <p style="font-size: 1.1em;">✅ Practice notes and worksheets</p>
+                    <p style="font-size: 1.1em;">✅ All teaching materials included in tuition fee</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>🎒 What Students Should Bring</h3>
+                <p>You'll be notified in advance if your child needs to bring specific materials such as:</p>
+                <ul>
+                    <li>School textbooks (if needed for homework help)</li>
+                    <li>Calculator</li>
+                    <li>Writing materials</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>👥 Lesson Format</h3>
+                <p><strong>Small group setting</strong> for personalized attention:</p>
+                <ul>
+                    <li>1-2 students per session (capped at 3 students maximum)</li>
+                    <li>Additional students will be rescheduled to another session</li>
+                    <li>Ensures quality individual attention for each student</li>
+                </ul>
+            </div>
+
+            <div class="highlight">
+                <p><strong>💬 WhatsApp Support Group:</strong> A WhatsApp group will be created with students as a platform to ask any mathematics questions anytime! Your child gets support beyond lesson hours. 📱✨</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Special Offer & Contact -->
+        <div class="slide">
+            <h2>🎁 Special Referral Bonus!</h2>
+            
+            <div class="bonus-box">
+                <div class="decorative-icon" style="color: white;">🌟</div>
+                <h3>Recommend & Get Rewarded!</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">For every successful student referral, your child receives:</p>
+                <p style="font-size: 2em; font-weight: bold; margin: 20px 0;">1 FREE WEEK OF LESSONS! 🎉</p>
+                <p style="margin-top: 10px; font-size: 1em;">Help your friends find quality math tuition while earning free lessons!</p>
+            </div>
+
+            <div class="content-section" style="margin-top: 40px;">
+                <h3>📞 Get in Touch</h3>
+                <div class="info-box">
+                    <p><strong>👨‍🏫 Tutor:</strong> Jasper Eng</p>
+                    <p><strong>📱 Contact:</strong> +65 8133 6308</p>
+                    <p><strong>💬 Platforms:</strong> WhatsApp / Telegram</p>
+                    <p><strong>📍 Location:</strong> Block 351 Woodlands Ave 1, #07-733</p>
+                </div>
+            </div>
+
+            <div class="highlight" style="text-align: center; margin-top: 30px; background: linear-gradient(135deg, #e6eeff 0%, #f0f4ff 100%); border-color: #667eea;">
+                <div class="decorative-icon" style="font-size: 2.5em; animation: none;">🙏</div>
+                <h3 style="color: #667eea; margin-bottom: 15px;">Thank You!</h3>
+                <p style="font-size: 1.15em;">Looking forward to helping your child excel in Mathematics and build confidence in their abilities! Let's make math enjoyable and achievable together! 📐✨</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="slide-counter">
+            <span id="slideNum">1</span> / <span id="totalSlides">9</span>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            if (n >= totalSlides) currentSlide = totalSlides - 1;
+            if (n < 0) currentSlide = 0;
+            
+            slides[currentSlide].classList.add('active');
+            document.getElementById('slideNum').textContent = currentSlide + 1;
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Touch swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) changeSlide(1);
+            if (touchEndX > touchStartX + 50) changeSlide(-1);
+        }
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
